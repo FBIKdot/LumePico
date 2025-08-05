@@ -16,8 +16,7 @@ export default (obj: { children?: never }) => (
         rel="noopener noreferrer"
       >
         LumePico
-      </a>{" "}
-      | Copyright &copy; 2025 FBIK.
+      </a>
     </footer>
     <br />
   </>
