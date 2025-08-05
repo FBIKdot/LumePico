@@ -1,6 +1,6 @@
 ---
 layout: blog.page.tsx
-title: "FBIK.'s blog"
+title: "LumePico"
 type: page
 bio: Minimalism
 ---
