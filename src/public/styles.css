@@ -1,0 +1,13 @@
+/* light */
+
+.hljs {
+  background: unset;
+}
+
+@media (prefers-color-scheme: dark) {
+  /* dark */
+
+  .hljs {
+    background: unset;
+  }
+}
