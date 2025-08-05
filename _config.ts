@@ -9,7 +9,7 @@ import codeHighlight from "lume/plugins/code_highlight.ts";
 import mila from "markdown-it-link-attributes";
 
 const site = lume({
-  location: new URL("https://fbik.top"),
+  location: new URL("https://lume-pico.vercel.app"),
   src: "src",
   server: {
     port: 4173,
