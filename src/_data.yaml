@@ -1,6 +1,8 @@
 layout: post.page.tsx
 type: post
 icon: /pico.svg
+author: FBIK.
+site: /
 footer: |
   Copyright 2025 FBIK. All rights reserved.
   Reproduction requires attribution to the original source.

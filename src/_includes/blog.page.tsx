@@ -1,90 +1,63 @@
 import Base from "./base.page.tsx";
-import { header } from "./header.ts";
 
 export default (
-  { content, title, search, showPostsList, bio, icon }: Lume.Data,
+  {
+    content,
+    title,
+    date,
+    tags,
+    description,
+    footer,
+    update,
+    icon,
+    author,
+    site,
+  }: Lume.Data,
   helpers: Lume.Helpers,
-) => {
-  const posts = search.pages().filter((page) => page.type !== "page");
-  const tags = [...new Set(posts.map((page) => page.tags).flat())];
-  return (
-    <Base title={title || "title"} icon={icon}>
-      <style>
-        {`
-      .invisibility{ display:none }
-      .post { display: var(--display, block); }
-      ${
-          tags.map((tag) =>
-            `#tag-${tag}:target ~ main .post:not([tag~="${tag}"])`
-          ).join(",")
-        }{ --display: none; }
-      ${
-          tags.map((tag) => `#tag-${tag}:target ~ main .clear-filter`).join(",")
-        }{ display: block}
-        
-      `}
-      </style>
-      {tags.map((tag) => (
-        <a class="invisibility" href={`#tag-${tag}`} id={`tag-${tag}`}></a>
-      ))}
-      <main class="container">
-        <section>
-          <article>
-            <h1>{title}</h1>
-            {bio && (
-              <>
-                {bio}
-                <br />
-              </>
-            )}
+) => (
+  <Base title={title || "title"} isPost={true} icon={icon}>
+    <header>
+      <h1 class="text-2xl font-bold">{title}</h1>
+      <p class="font-bold m-0">
+        <time
+          datetime={date.toISOString()}
+        >
+          {helpers.date(date)}
+        </time>
+        <span>{" "}&middot;{" "}</span>
+        <a href={site || "/"}>{author || "Anonymous"}</a>
+      </p>
+      {description && description !== "" && (
+        <blockquote>{description}</blockquote>
+      )}
+      <hr />
+    </header>
+    <main>
+      <article class="md">
+        {{ __html: content }}
 
-            {[...Object.entries(header.nav), ["rss", "/feed.xml"]].map((
-              [key, value],
-              index,
-            ) => (
-              <>
-                <span>{index !== 0 && " | "}</span>
-                <a
-                  href={value as string}
-                  target={value.includes("http") ? "_blank" : "_self"}
-                  rel="noopener noreferrer"
-                >
-                  {key}
-                </a>
-              </>
-            ))}
-          </article>
-        </section>
+        <div class="tags">
+          {tags.map((tag) => (
+            <code class="pill tag">
+              <a href={`/blog/#tag-${tag}`}>{`#${tag}`}</a>
+            </code>
+          ))}
+        </div>
 
-        <hr />
-        {content && (
-          <section>
-            <article class="md">
-              {{ __html: content }}
-            </article>
-            {showPostsList && <hr />}
-          </section>
+        <div id="last-updated" class="text-sm">
+          last updated:{" "}
+          <time datetime={new Date(update || date).toISOString()}>
+            {helpers.date(update || date)}
+          </time>
+        </div>
+
+        {footer && footer !== "" && (
+          <div id="post-footer">
+            <hr />
+            {{ __html: helpers.md(footer) }}
+          </div>
         )}
-        {showPostsList && (
-          <section class="posts">
-            <a href="#" class="invisibility clear-filter">clear filters</a>
-            {posts.map((page) => (
-              <article class="post" tag={page.tags.join(" ")}>
-                <div>
-                  <time
-                    datetime={page.date.toISOString()}
-                  >
-                    {helpers.date(page.date)}
-                  </time>{" "}
-                  <span>
-                    <a href={page.url}>{page.title}</a>
-                  </span>
-                </div>
-              </article>
-            ))}
-          </section>
-        )}
-      </main>
-    </Base>
-  );
-};
+      </article>
+    </main>
+  </Base>
+);
